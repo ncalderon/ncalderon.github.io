@@ -21,7 +21,8 @@ $(function() {
                 firstName = name.split(' ').slice(0, -1).join(' ');
             }
             $.ajax({
-                url: "https://cryptic-oasis-40873.herokuapp.com/mail",
+                //url: "https://cryptic-oasis-40873.herokuapp.com/mail",
+                url: "http://localhost:5000/mail",
                 type: "POST",
                 data: {
                     name: name,
@@ -30,7 +31,40 @@ $(function() {
                     message: message
                 },
                 cache: false,
-                success: function() {
+                complete: function (xhr, textStatus) {
+                    console.log("xhr:", xhr);
+                    console.log("status:", textStatus);
+                    if (textStatus == "success") {
+                        // Enable button & show success message
+                        
+                        $('#success').html("<div class='alert alert-success'>");
+                        $('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+                            .append("</button>");
+                        $('#success > .alert-success')
+                            .append("<strong>Your message has been sent. </strong>");
+                        $('#success > .alert-success')
+                            .append('</div>');
+
+                        //clear all fields
+                        $('#contactForm').trigger("reset");
+                        // block send new message
+                        $("#btnSubmit").attr("disabled", true);
+                        $("#btnSubmit").hide();
+                        return;
+                    }
+                    $('#success').html("<div class='alert alert-danger'>");
+                    $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
+                        .append("</button>");
+                    $('#success > .alert-danger').append("<strong>Sorry " + firstName + ", it seems that my mail server is not responding. Please try again later!");
+                    $('#success > .alert-danger').append('</div>');
+                    //clear all fields
+                    $('#contactForm').trigger("reset");
+                },
+                
+                /*success: function(data, status, xhr) {
+                    console.log("data:", data);
+                    console.log("status:", status);
+                    console.log("xhr:", xhr);
                     // Enable button & show success message
                     $("#btnSubmit").attr("disabled", false);
                     $('#success').html("<div class='alert alert-success'>");
@@ -44,7 +78,7 @@ $(function() {
                     //clear all fields
                     $('#contactForm').trigger("reset");
                 },
-                error: function() {
+                error: function(xhr) {
                     // Fail message
                     $('#success').html("<div class='alert alert-danger'>");
                     $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
@@ -53,7 +87,7 @@ $(function() {
                     $('#success > .alert-danger').append('</div>');
                     //clear all fields
                     $('#contactForm').trigger("reset");
-                },
+                },*/
             })
         },
         filter: function() {
