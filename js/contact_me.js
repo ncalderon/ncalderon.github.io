@@ -21,8 +21,8 @@ $(function() {
                 firstName = name.split(' ').slice(0, -1).join(' ');
             }
             $.ajax({
-                url: "https://cryptic-oasis-40873.herokuapp.com/mail",
-                //url: "http://localhost:5000/mail",
+                //url: "https://cryptic-oasis-40873.herokuapp.com/mail",
+                url: "http://localhost:5000/mail",
                 type: "POST",
                 data: {
                     name: name,
